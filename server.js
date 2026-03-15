@@ -13,8 +13,11 @@ app.use(express.json());
 app.use('/api/employees', require('./routes/employees'));
 app.use('/api/attendance', require('./routes/attendance'));
 
+// 👉 เพิ่มบรรทัดนี้เข้าไปครับ เพื่อเปิดใช้งาน API Login
+app.use('/api/login', require('./routes/auth'));
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server is running on http://localhost:${PORT}`);
+  console.log(` Server is running on http://localhost:${PORT}`);
 });
