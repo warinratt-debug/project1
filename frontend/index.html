@@ -9,10 +9,14 @@
 <body>
 
 <div class="container">
-    <h2 class="text-center mb-4">🏢 ระบบจัดการเวลาทำงาน (OT & Attendance)</h2>
+    <h2 class="text-center mb-4 position-relative">
+    🏢 ระบบจัดการเวลาทำงาน (OT & Attendance)
+    <button class="btn btn-danger btn-sm position-absolute end-0 top-0 mt-2" onclick="logout()">ออกจากระบบ</button>
+    </h2>
 
-    <div class="row">
-        <div class="col-md-4">
+    <div class="row"> 
+
+    <div class="col-md-4" id="adminBox1">
             <div class="card shadow-sm">
                 <div class="card-header bg-primary text-white">1. เพิ่มพนักงานใหม่</div>
                 <div class="card-body">
@@ -39,7 +43,7 @@
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4" id="adminBox2">
             <div class="card shadow-sm">
                 <div class="card-header bg-warning text-dark">3. ออกรายงานรายเดือน</div>
                 <div class="card-body">
@@ -75,6 +79,32 @@
 </div>
 
 <script>
+
+    // --- เริ่มโค้ด "ยามเฝ้าเว็บ" ---
+    document.addEventListener("DOMContentLoaded", () => {
+        const role = localStorage.getItem('role');
+
+        // 1. ถ้าไม่มีบัตร (ยังไม่ล็อกอิน) ให้เตะไปหน้า login.html
+        if (!role) {
+            window.location.href = 'login.html';
+            return; 
+        }
+
+        // 2. ถ้าเป็นแค่พนักงานทั่วไป (user) ให้ซ่อนกล่องที่ 1 และ 3 
+        // (ซึ่งเราตั้งชื่อมันไว้ว่า adminBox1 กับ adminBox2)
+        if (role === 'user') {
+            document.getElementById('adminBox1').style.display = 'none';
+            document.getElementById('adminBox2').style.display = 'none';
+        }
+    });
+
+    // 3. ฟังก์ชันสำหรับปุ่มออกจากระบบ
+    function logout() {
+        localStorage.clear(); // ล้างข้อมูล
+        window.location.href = 'login.html'; // เด้งกลับไปหน้าล็อกอิน
+    }
+    // --- จบโค้ด "ยามเฝ้าเว็บ" ---
+
     const API_URL = 'http://localhost:3000/api';
 
     // ฟังก์ชันเพิ่มพนักงาน
