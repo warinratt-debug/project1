@@ -16,6 +16,9 @@ app.use('/api/attendance', require('./routes/attendance'));
 // 👉 เพิ่มบรรทัดนี้เข้าไปครับ เพื่อเปิดใช้งาน API Login
 app.use('/api/login', require('./routes/auth'));
 
+// 👉 เพิ่มบรรทัดนี้เข้าไปเพื่อให้เซิร์ฟเวอร์รู้จักระบบสมัครสมาชิก
+app.use('/api/register', require('./routes/register'));
+
 // Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
