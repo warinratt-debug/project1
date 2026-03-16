@@ -1,162 +1,193 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ระบบจัดการพนักงานและเวลาทำงาน</title>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<div class="container">
-    <h2 class="text-center mb-4 position-relative">
-    🏢 ระบบจัดการเวลาทำงาน (OT & Attendance)
-    <button class="btn btn-danger btn-sm position-absolute end-0 top-0 mt-2" onclick="logout()">ออกจากระบบ</button>
-    </h2>
+    <div class="container">
+        <h2 class="text-center mb-4 position-relative">
+            🏢 ระบบจัดการเวลาทำงาน (Attendance)
+            <button class="btn btn-danger btn-sm position-absolute end-0 top-0 mt-2"
+                onclick="logout()">ออกจากระบบ</button>
+        </h2>
 
-    <div class="row"> 
+        <div class="row">
 
-    <div class="col-md-4" id="adminBox1">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">1. เพิ่มพนักงานใหม่</div>
-                <div class="card-body">
-                    <input type="text" id="empCode" class="form-control mb-2" placeholder="รหัสพนักงาน (เช่น EMP01)">
-                    <input type="text" id="empName" class="form-control mb-2" placeholder="ชื่อ-นามสกุล">
-                    <input type="text" id="empDept" class="form-control mb-3" placeholder="แผนก (เช่น IT, HR)">
-                    <button class="btn btn-primary w-100" onclick="addEmployee()">บันทึกพนักงาน</button>
+            <div class="col-md-4" id="adminBox1">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">1. เพิ่มพนักงานใหม่</div>
+                    <div class="card-body">
+                        <input type="text" id="empCode" class="form-control mb-2"
+                            placeholder="รหัสพนักงาน (เช่น EMP01)">
+                        <input type="text" id="empName" class="form-control mb-2" placeholder="ชื่อ-นามสกุล">
+                        <input type="text" id="empDept" class="form-control mb-3" placeholder="ตำแหน่ง (เช่น IT, HR)">
+                        <button class="btn btn-primary w-100" onclick="addEmployee()">บันทึกพนักงาน</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8" id="adminBox2">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-dark text-white">⚙️ 2. จัดการข้อมูลพนักงานทั้งหมด</div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>รหัสพนักงาน</th>
+                                        <th>ชื่อ-นามสกุล</th>
+                                        <th>ตำแหน่ง</th>
+                                        <th class="text-center" style="width: 150px;">จัดการ</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employeeTableBody">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-success text-white">2. บันทึกเวลาทำงาน</div>
+                    <div class="card-body">
+                        <input type="number" id="attEmpId" class="form-control mb-2" placeholder="ID พนักงาน (เช่น 1)">
+                        <input type="date" id="attDate" class="form-control mb-2">
+                        <div class="row mb-3">
+                            <div class="col"><input type="time" id="attCheckIn" class="form-control" title="เวลาเข้า">
+                            </div>
+                            <div class="col"><input type="time" id="attCheckOut" class="form-control" title="เวลาออก">
+                            </div>
+                        </div>
+                        <button class="btn btn-success w-100" onclick="recordAttendance()">บันทึกเวลา & คำนวณOT</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4" id="adminBox2">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-warning text-dark">3. ออกรายงานรายเดือน</div>
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col"><input type="number" id="repYear" class="form-control"
+                                    placeholder="ปี (เช่น 2024)" value="2024"></div>
+                            <div class="col"><input type="number" id="repMonth" class="form-control"
+                                    placeholder="เดือน (เช่น 3)" value="3"></div>
+                        </div>
+                        <button class="btn btn-warning w-100" onclick="getReport()">ดูรายงานสรุป</button>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
-            <div class="card shadow-sm">
-                <div class="card-header bg-success text-white">2. บันทึกเวลาทำงาน</div>
-                <div class="card-body">
-                    <input type="number" id="attEmpId" class="form-control mb-2" placeholder="ID พนักงาน (เช่น 1)">
-                    <input type="date" id="attDate" class="form-control mb-2">
-                    <div class="row mb-3">
-                        <div class="col"><input type="time" id="attCheckIn" class="form-control" title="เวลาเข้า"></div>
-                        <div class="col"><input type="time" id="attCheckOut" class="form-control" title="เวลาออก"></div>
-                    </div>
-                    <button class="btn btn-success w-100" onclick="recordAttendance()">บันทึกเวลา & คำนวณ OT</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4" id="adminBox2">
-            <div class="card shadow-sm">
-                <div class="card-header bg-warning text-dark">3. ออกรายงานรายเดือน</div>
-                <div class="card-body">
-                    <div class="row mb-3">
-                        <div class="col"><input type="number" id="repYear" class="form-control" placeholder="ปี (เช่น 2024)" value="2024"></div>
-                        <div class="col"><input type="number" id="repMonth" class="form-control" placeholder="เดือน (เช่น 3)" value="3"></div>
-                    </div>
-                    <button class="btn btn-warning w-100" onclick="getReport()">ดูรายงานสรุป</button>
-                </div>
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>รหัสพนักงาน</th>
+                            <th>ชื่อ-นามสกุล</th>
+                            <th>จำนวนวันทำงาน</th>
+                            <th>รวมชั่วโมงทำงาน</th>
+                            <th>รวมชั่วโมง OT</th>
+                        </tr>
+                    </thead>
+                    <tbody id="reportTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="card shadow-sm mt-4">
-        <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
-        <div class="card-body">
-            <table class="table table-bordered table-striped">
-                <thead>
-                    <tr>
-                        <th>รหัสพนักงาน</th>
-                        <th>ชื่อ-นามสกุล</th>
-                        <th>จำนวนวันทำงาน</th>
-                        <th>รวมชั่วโมงทำงาน</th>
-                        <th>รวมชั่วโมง OT</th>
-                    </tr>
-                </thead>
-                <tbody id="reportTableBody">
-                    <tr><td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td></tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+    <script>
 
-<script>
+        // --- เริ่มโค้ด "ยามเฝ้าเว็บ" ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const role = localStorage.getItem('role');
 
-    // --- เริ่มโค้ด "ยามเฝ้าเว็บ" ---
-    document.addEventListener("DOMContentLoaded", () => {
-        const role = localStorage.getItem('role');
+            // 1. ถ้าไม่มีบัตร (ยังไม่ล็อกอิน) ให้เตะไปหน้า login.html
+            if (!role) {
+                window.location.href = 'login.html';
+                return;
+            }
 
-        // 1. ถ้าไม่มีบัตร (ยังไม่ล็อกอิน) ให้เตะไปหน้า login.html
-        if (!role) {
-            window.location.href = 'login.html';
-            return; 
-        }
-
-        // 2. ถ้าเป็นแค่พนักงานทั่วไป (user) ให้ซ่อนกล่องที่ 1 และ 3 
-        // (ซึ่งเราตั้งชื่อมันไว้ว่า adminBox1 กับ adminBox2)
-        if (role === 'user') {
-            document.getElementById('adminBox1').style.display = 'none';
-            document.getElementById('adminBox2').style.display = 'none';
-        }
-    });
-
-    // 3. ฟังก์ชันสำหรับปุ่มออกจากระบบ
-    function logout() {
-        localStorage.clear(); // ล้างข้อมูล
-        window.location.href = 'login.html'; // เด้งกลับไปหน้าล็อกอิน
-    }
-    // --- จบโค้ด "ยามเฝ้าเว็บ" ---
-
-    const API_URL = 'http://localhost:3000/api';
-
-    // ฟังก์ชันเพิ่มพนักงาน
-    async function addEmployee() {
-        const data = {
-            employee_code: document.getElementById('empCode').value,
-            name: document.getElementById('empName').value,
-            department: document.getElementById('empDept').value
-        };
-        const res = await fetch(`${API_URL}/employees`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            // 2. ถ้าเป็นแค่พนักงานทั่วไป (user) ให้ซ่อนกล่องที่ 1 และ 3 
+            // (ซึ่งเราตั้งชื่อมันไว้ว่า adminBox1 กับ adminBox2)
+            if (role === 'user') {
+                document.getElementById('adminBox1').style.display = 'none';
+                document.getElementById('adminBox2').style.display = 'none';
+            }
         });
-        const result = await res.json();
-        alert(result.message || result.error);
-    }
 
-    // ฟังก์ชันบันทึกเวลาทำงาน
-    async function recordAttendance() {
-        const data = {
-            employee_id: document.getElementById('attEmpId').value,
-            date: document.getElementById('attDate').value,
-            check_in: document.getElementById('attCheckIn').value,
-            check_out: document.getElementById('attCheckOut').value
-        };
-        const res = await fetch(`${API_URL}/attendance`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if(result.message) {
-            alert(`บันทึกสำเร็จ!\nชั่วโมงทำงาน: ${result.work_hours} ชม.\nOT: ${result.ot_hours} ชม.`);
-        } else {
-            alert(result.error);
+        // 3. ฟังก์ชันสำหรับปุ่มออกจากระบบ
+        function logout() {
+            localStorage.clear(); // ล้างข้อมูล
+            window.location.href = 'login.html'; // เด้งกลับไปหน้าล็อกอิน
         }
-    }
+        // --- จบโค้ด "ยามเฝ้าเว็บ" ---
 
-    // ฟังก์ชันดึงรายงานสรุป
-    async function getReport() {
-        const year = document.getElementById('repYear').value;
-        const month = document.getElementById('repMonth').value;
-        const res = await fetch(`${API_URL}/attendance/report/${year}/${month}`);
-        const result = await res.json();
-        
-        const tbody = document.getElementById('reportTableBody');
-        tbody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
+        const API_URL = 'http://localhost:3000/api';
 
-        if(result.report && result.report.length > 0) {
-            result.report.forEach(row => {
-                tbody.innerHTML += `
+        // ฟังก์ชันเพิ่มพนักงาน
+        async function addEmployee() {
+            const data = {
+                employee_code: document.getElementById('empCode').value,
+                name: document.getElementById('empName').value,
+                department: document.getElementById('empDept').value
+            };
+            const res = await fetch(`${API_URL}/employees`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            alert(result.message || result.error);
+        }
+
+        // ฟังก์ชันบันทึกเวลาทำงาน
+        async function recordAttendance() {
+            const data = {
+                employee_id: document.getElementById('attEmpId').value,
+                date: document.getElementById('attDate').value,
+                check_in: document.getElementById('attCheckIn').value,
+                check_out: document.getElementById('attCheckOut').value
+            };
+            const res = await fetch(`${API_URL}/attendance`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+            const result = await res.json();
+            if (result.message) {
+                alert(`บันทึกสำเร็จ!\nชั่วโมงทำงาน: ${result.work_hours} ชม.\nOT: ${result.ot_hours} ชม.`);
+            } else {
+                alert(result.error);
+            }
+        }
+
+        // ฟังก์ชันดึงรายงานสรุป
+        async function getReport() {
+            const year = document.getElementById('repYear').value;
+            const month = document.getElementById('repMonth').value;
+            const res = await fetch(`${API_URL}/attendance/report/${year}/${month}`);
+            const result = await res.json();
+
+            const tbody = document.getElementById('reportTableBody');
+            tbody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
+
+            if (result.report && result.report.length > 0) {
+                result.report.forEach(row => {
+                    tbody.innerHTML += `
                     <tr>
                         <td>${row.employee_code}</td>
                         <td>${row.name}</td>
@@ -165,12 +196,90 @@
                         <td>${row.total_ot_hours} ชม.</td>
                     </tr>
                 `;
-            });
-        } else {
-            tbody.innerHTML = '<tr><td colspan="5" class="text-center">ไม่พบข้อมูลในเดือนนี้</td></tr>';
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">ไม่พบข้อมูลในเดือนนี้</td></tr>';
+            }
         }
-    }
-</script>
+        // ฟังก์ชันที่ 1: ดึงข้อมูลพนักงานทั้งหมดมาแสดงในตาราง
+        async function loadEmployees() {
+            try {
+                const res = await fetch('http://localhost:3000/api/employees');
+                const employees = await res.json();
+
+                const tbody = document.getElementById('employeeTableBody');
+                tbody.innerHTML = ''; // ล้างตารางเก่าก่อนใส่ข้อมูลใหม่
+
+                employees.forEach(emp => {
+                    tbody.innerHTML += `
+                <tr>
+                    <td>${emp.employee_code}</td>
+                    <td>${emp.name}</td>
+                    <td>${emp.department}</td>
+                    <td class="text-center">
+                        <button class="btn btn-warning btn-sm" onclick="editEmployee(${emp.id}, '${emp.name}', '${emp.department}')">✏️</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteEmployee(${emp.id})">🗑️</button>
+                    </td>
+                </tr>
+            `;
+                });
+            } catch (error) {
+                console.error('โหลดข้อมูลพนักงานล้มเหลว:', error);
+            }
+        }
+
+        // ฟังก์ชันที่ 2: แก้ไขพนักงาน (มีหน้าต่างเด้งให้พิมพ์)
+        async function editEmployee(id, oldName, oldDept) {
+            const newName = prompt("แก้ไขชื่อ-นามสกุล:", oldName);
+            const newDept = prompt("แก้ไขแผนก:", oldDept);
+
+            // เช็คว่าผู้ใช้ไม่ได้กดยกเลิก (Cancel)
+            if (newName && newDept) {
+                try {
+                    const res = await fetch(`http://localhost:3000/api/employees/${id}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: newName, department: newDept })
+                    });
+
+                    if (res.ok) {
+                        alert('แก้ไขข้อมูลสำเร็จ!');
+                        loadEmployees(); // โหลดตารางใหม่ทันที
+                    } else {
+                        alert('เกิดข้อผิดพลาดในการแก้ไข');
+                    }
+                } catch (error) {
+                    alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+                }
+            }
+        }
+
+        // ฟังก์ชันที่ 3: ลบพนักงาน
+        async function deleteEmployee(id) {
+            if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบพนักงานคนนี้?')) {
+                try {
+                    const res = await fetch(`http://localhost:3000/api/employees/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (res.ok) {
+                        alert('ลบข้อมูลสำเร็จ!');
+                        loadEmployees(); // โหลดตารางใหม่ทันที
+                    } else {
+                        alert('เกิดข้อผิดพลาดในการลบ');
+                    }
+                } catch (error) {
+                    alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
+                }
+            }
+        }
+
+        // สั่งให้โหลดตารางพนักงาน ทันทีที่เปิดหน้าเว็บขึ้นมา
+        window.addEventListener('load', () => {
+            loadEmployees();
+        });
+    </script>
 
 </body>
+
 </html>

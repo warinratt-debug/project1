@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สมัครสมาชิก - ระบบจัดการเวลาทำงาน</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+
+    <div class="card shadow-lg" style="width: 400px;">
+        <div class="card-header bg-success text-white text-center py-3">
+            <h5 class="mb-0">📝 สมัครสมาชิก</h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="mb-3">
+                <label class="form-label">รหัสพนักงาน (ใช้เป็น Username)</label>
+                <input type="text" id="regEmpCode" class="form-control" placeholder="เช่น EMP05">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">ชื่อ-นามสกุล</label>
+                <input type="text" id="regName" class="form-control" placeholder="ชื่อของคุณ">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">ตำแหน่ง</label>
+                <input type="text" id="regDept" class="form-control" placeholder="เช่น IT, HR">
+            </div>
+            <div class="mb-4">
+                <label class="form-label">ตั้งรหัสผ่าน</label>
+                <div class="input-group">
+                    <input type="password" id="regPassword" class="form-control"
+                        placeholder="ตั้งรหัสผ่านสำหรับเข้าสู่ระบบ">
+                    <button class="btn btn-outline-secondary" type="button"
+                        onclick="togglePassword('regPassword', 'eyeIconReg')">
+                        <span id="eyeIconReg">👁️</span>
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-success w-100 mb-3" onclick="handleRegister()">ลงทะเบียน</button>
+
+            <div class="text-center">
+                <a href="login.html" class="text-decoration-none">มีบัญชีอยู่แล้ว? เข้าสู่ระบบที่นี่</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 1. ฟังก์ชันเปิด/ปิดตา 
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(iconId);
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+        async function handleRegister() {
+            const empCode = document.getElementById('regEmpCode').value;
+            const name = document.getElementById('regName').value;
+            const dept = document.getElementById('regDept').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (!empCode || !name || !dept || !password) {
+                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง!');
+                return;
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/api/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        employee_code: empCode,
+                        name: name,
+                        department: dept,
+                        password: password
+                    })
+                });
+
+                const result = await res.json();
+
+                if (res.ok) {
+                    alert(result.message);
+                    window.location.href = 'login.html'; // สมัครเสร็จ เด้งกลับไปหน้าล็อกอิน
+                } else {
+                    alert(result.error);
+                }
+            } catch (error) {
+                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการรัน Backend');
+            }
+        }
+    </script>
+
+</body>
+
+</html>
