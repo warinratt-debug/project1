@@ -10,7 +10,7 @@ router.post('/', async (req, res) => {
     // นำเวลามาคำนวณหาจำนวนชั่วโมงทำงาน
     const start = new Date(`${date}T${check_in}`);
     const end = new Date(`${date}T${check_out}`);
-    
+
     // แปลงผลต่างเวลาเป็นชั่วโมง
     const diffMs = end - start;
     const work_hours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));

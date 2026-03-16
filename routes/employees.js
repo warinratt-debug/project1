@@ -26,4 +26,40 @@ router.post('/', async (req, res) => {
   }
 });
 
+// 3. แก้ไขข้อมูลพนักงาน (PUT)
+router.put('/:id', async (req, res) => {
+  const { id } = req.params; // รับ ID จาก URL
+  const { name, department } = req.body; // รับข้อมูลที่ต้องการแก้
+
+  try {
+    const [result] = await db.query(
+      'UPDATE employees SET name = ?, department = ? WHERE id = ?',
+      [name, department, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'ไม่พบพนักงานที่ต้องการแก้ไข' });
+    }
+    res.json({ message: 'อัปเดตข้อมูลพนักงานสำเร็จ' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// 4. ลบข้อมูลพนักงาน (DELETE)
+router.delete('/:id', async (req, res) => {
+  const { id } = req.params; // รับ ID จาก URL
+
+  try {
+    const [result] = await db.query('DELETE FROM employees WHERE id = ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'ไม่พบพนักงานที่ต้องการลบ' });
+    }
+    res.json({ message: 'ลบพนักงานสำเร็จ' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
