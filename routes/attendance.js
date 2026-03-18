@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const db = require('./db');
 
 // 1. บันทึกเข้า-ออกงาน และคำนวณ OT (POST)
 router.post('/', async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // เชื่อมต่อฐานข้อมูล
+const db = require('./db'); // เชื่อมต่อฐานข้อมูล
 
 // สร้าง API สำหรับสมัครสมาชิก
 router.post('/', async (req, res) => {

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // ดึงการเชื่อมต่อฐานข้อมูลมาใช้
+const db = require('./db'); // ดึงการเชื่อมต่อฐานข้อมูลมาใช้
 
 // 1. ดึงรายชื่อพนักงานทั้งหมด (GET)
 router.get('/', async (req, res) => {
