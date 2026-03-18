@@ -111,30 +111,26 @@
 
     <script>
 
-        // --- เริ่มโค้ด "ยามเฝ้าเว็บ" ---
+        // ระบบจัดการสิทธิ์ผู้ใช้งาน
         document.addEventListener("DOMContentLoaded", () => {
             const role = localStorage.getItem('role');
 
-            // 1. ถ้าไม่มีบัตร (ยังไม่ล็อกอิน) ให้เตะไปหน้า login.html
+            
             if (!role) {
                 window.location.href = 'login.html';
                 return;
             }
 
-            // 2. ถ้าเป็นแค่พนักงานทั่วไป (user) ให้ซ่อนกล่องที่ 1 และ 3 
-            // (ซึ่งเราตั้งชื่อมันไว้ว่า adminBox1 กับ adminBox2)
             if (role === 'user') {
                 document.getElementById('adminBox1').style.display = 'none';
                 document.getElementById('adminBox2').style.display = 'none';
             }
         });
 
-        // 3. ฟังก์ชันสำหรับปุ่มออกจากระบบ
         function logout() {
-            localStorage.clear(); // ล้างข้อมูล
-            window.location.href = 'login.html'; // เด้งกลับไปหน้าล็อกอิน
+            localStorage.clear();
+            window.location.href = 'login.html';
         }
-        // --- จบโค้ด "ยามเฝ้าเว็บ" ---
 
         const API_URL = 'http://localhost:3000/api';
 
@@ -201,7 +197,7 @@
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center">ไม่พบข้อมูลในเดือนนี้</td></tr>';
             }
         }
-        // ฟังก์ชันที่ 1: ดึงข้อมูลพนักงานทั้งหมดมาแสดงในตาราง
+        // ดึงข้อมูลพนักงานทั้งหมดมาแสดงในตาราง
         async function loadEmployees() {
             try {
                 const res = await fetch('http://localhost:3000/api/employees');
@@ -228,10 +224,10 @@
             }
         }
 
-        // ฟังก์ชันที่ 2: แก้ไขพนักงาน (มีหน้าต่างเด้งให้พิมพ์)
+        // แก้ไขพนักงาน (มีหน้าต่างเด้งให้พิมพ์)
         async function editEmployee(id, oldName, oldDept) {
             const newName = prompt("แก้ไขชื่อ-นามสกุล:", oldName);
-            const newDept = prompt("แก้ไขแผนก:", oldDept);
+            const newDept = prompt("แก้ไขตำแหน่ง:", oldDept);
 
             // เช็คว่าผู้ใช้ไม่ได้กดยกเลิก (Cancel)
             if (newName && newDept) {
@@ -254,7 +250,7 @@
             }
         }
 
-        // ฟังก์ชันที่ 3: ลบพนักงาน
+        // ลบพนักงาน
         async function deleteEmployee(id) {
             if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบพนักงานคนนี้?')) {
                 try {

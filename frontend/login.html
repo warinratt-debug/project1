@@ -18,7 +18,7 @@
         <div class="card-body p-4">
             <div class="mb-3">
                 <label class="form-label">ชื่อผู้ใช้งาน</label>
-                <input type="text" id="username" class="form-control" placeholder="เช่น admin หรือ user1">
+                <input type="text" id="username" class="form-control" placeholder="เช่น admin หรือ Emp01">
             </div>
             <div class="mb-4">
                 <label class="form-label">รหัสผ่าน</label>
@@ -40,7 +40,6 @@
     </div>
 
     <script>
-        // 1. ฟังก์ชันเปิด/ปิดตา (เอาไว้นอกสุด)
         function togglePassword(inputId, iconId) {
             const input = document.getElementById(inputId);
             const icon = document.getElementById(iconId);
@@ -58,7 +57,6 @@
             const pass = document.getElementById('password').value;
 
             try {
-                // ส่งข้อมูลไปที่ Backend ที่เราเพิ่งทำเสร็จ
                 const res = await fetch('http://localhost:3000/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -68,7 +66,6 @@
                 const result = await res.json();
 
                 if (res.ok) {
-                    // ถ้าล็อกอินผ่าน ให้จำสถานะไว้ในเบราว์เซอร์
                     localStorage.setItem('role', result.role);
                     localStorage.setItem('employee_code', result.employee_code);
 
