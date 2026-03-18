@@ -7,7 +7,7 @@ router.post('/', async (req, res) => {
   const { username, password } = req.body;
 
   try {
-    // ใช้คำสั่ง SQL ตรวจสอบ user และ password (ใช้ async/await ให้เข้ากับระบบของคุณ)
+    // ใช้คำสั่ง SQL ตรวจสอบ user และ password
     const [rows] = await db.query(
       'SELECT * FROM users WHERE username = ? AND password = ?',
       [username, password]

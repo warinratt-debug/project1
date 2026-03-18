@@ -7,15 +7,13 @@ router.post('/', async (req, res) => {
   const { employee_id, date, check_in, check_out } = req.body;
 
   try {
-    // นำเวลามาคำนวณหาจำนวนชั่วโมงทำงาน
     const start = new Date(`${date}T${check_in}`);
     const end = new Date(`${date}T${check_out}`);
 
-    // แปลงผลต่างเวลาเป็นชั่วโมง
     const diffMs = end - start;
     const work_hours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));
 
-    // คำนวณ OT (ถ้าทำเกิน 8 ชั่วโมง ให้เอาที่เกินมาเป็น OT)
+    
     const ot_hours = work_hours > 8 ? parseFloat((work_hours - 8).toFixed(2)) : 0;
 
     // บันทึกลงฐานข้อมูล

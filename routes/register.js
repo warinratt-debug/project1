@@ -8,13 +8,13 @@ router.post('/', async (req, res) => {
     const { employee_code, name, department, password } = req.body;
 
     try {
-        // 1. บันทึกข้อมูลพนักงานลงตาราง employees
+        // บันทึกข้อมูลพนักงานลงตาราง employees
         await db.query(
             'INSERT INTO employees (employee_code, name, department) VALUES (?, ?, ?)',
             [employee_code, name, department]
         );
 
-        // 2. บันทึกข้อมูลบัญชีลงตาราง users 
+        // บันทึกข้อมูลบัญชีลงตาราง users 
         // ให้ username คือรหัสพนักงาน และให้สิทธิ์คนที่สมัครเองเป็นแค่ 'user' ธรรมดา
         await db.query(
             'INSERT INTO users (username, password, role, employee_code) VALUES (?, ?, ?, ?)',
