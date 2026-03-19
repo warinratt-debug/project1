@@ -7,6 +7,7 @@
     <title>สมัครสมาชิก - ระบบจัดการเวลาทำงาน</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="d-flex align-items-center justify-content-center" style="height: 100vh;">
@@ -48,54 +49,61 @@
     </div>
 
     <script>
-        function togglePassword(inputId, iconId) {
-            const input = document.getElementById(inputId);
-            const icon = document.getElementById(iconId);
-
-            if (input.type === 'password') {
-                input.type = 'text';
-                icon.textContent = '🙈';
-            } else {
-                input.type = 'password';
-                icon.textContent = '👁️';
-            }
+    function togglePassword(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        const icon = document.getElementById(iconId);
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            icon.textContent = '👁️';
         }
-        async function handleRegister() {
-            const empCode = document.getElementById('regEmpCode').value;
-            const name = document.getElementById('regName').value;
-            const dept = document.getElementById('regDept').value;
-            const password = document.getElementById('regPassword').value;
+    }
 
-            if (!empCode || !name || !dept || !password) {
-                alert('กรุณากรอกข้อมูลให้ครบทุกช่อง!');
-                return;
-            }
+    async function handleRegister() {
+        const empCode = document.getElementById('regEmpCode').value;
+        const name = document.getElementById('regName').value;
+        const dept = document.getElementById('regDept').value;
+        const password = document.getElementById('regPassword').value;
 
-            try {
-                const res = await fetch('http://localhost:3000/api/register', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        employee_code: empCode,
-                        name: name,
-                        department: dept,
-                        password: password
-                    })
+        if (!empCode || !name || !dept || !password) {
+            Swal.fire('แจ้งเตือน', 'กรุณากรอกข้อมูลให้ครบทุกช่อง!', 'warning');
+            return;
+        }
+
+        try {
+            const res = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    employee_code: empCode,
+                    name: name,
+                    department: dept,
+                    password: password
+                })
+            });
+
+            const result = await res.json();
+
+            if (res.ok) {
+                // สมัครสำเร็จ ให้กดยืนยันก่อนเด้งไปหน้าล็อกอิน
+                Swal.fire({
+                    title: 'สำเร็จ!',
+                    text: result.message,
+                    icon: 'success',
+                    confirmButtonText: 'ตกลง'
+                }).then(() => {
+                    window.location.href = 'login.html';
                 });
-
-                const result = await res.json();
-
-                if (res.ok) {
-                    alert(result.message);
-                    window.location.href = 'login.html'; // สมัครเสร็จ เด้งกลับไปหน้าล็อกอิน
-                } else {
-                    alert(result.error);
-                }
-            } catch (error) {
-                alert('ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการรัน Backend');
+            } else {
+                Swal.fire('เกิดข้อผิดพลาด', result.error, 'error');
             }
+        } catch (error) {
+            Swal.fire('ข้อผิดพลาดการเชื่อมต่อ', 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้ กรุณาตรวจสอบการรัน Backend', 'error');
         }
-    </script>
+    }
+</script>
 
 </body>
 

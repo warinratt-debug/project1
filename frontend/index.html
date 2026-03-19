@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="th">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +7,6 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-
 <body>
 
     <div class="container">
@@ -18,266 +16,136 @@
                 onclick="logout()">ออกจากระบบ</button>
         </h2>
 
-        <div class="row">
-
-            <div class="col-md-8" id="adminBox1">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-dark text-white">⚙️ 1. จัดการข้อมูลพนักงานทั้งหมด</div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-hover table-bordered">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>รหัสพนักงาน</th>
-                                        <th>ชื่อ-นามสกุล</th>
-                                        <th>ตำแหน่ง</th>
-                                        <th class="text-center" style="width: 150px;">จัดการ</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="employeeTableBody">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="col-md-4" id="adminBox1">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-warning text-dark">📝 2. ออกรายงานรายเดือน</div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col"><input type="number" id="repYear" class="form-control"
-                                    placeholder="ปี (เช่น 2024)" value="2026"></div>
-                            <div class="col"><input type="number" id="repMonth" class="form-control"
-                                    placeholder="เดือน (เช่น 3)" value="3"></div>
-                        </div>
-                        <button class="btn btn-warning w-100" onclick="getReport()">ดูรายงานสรุป</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>รหัสพนักงาน</th>
-                            <th>ชื่อ-นามสกุล</th>
-                            <th>จำนวนวันทำงาน</th>
-                            <th>รวมชั่วโมงทำงาน</th>
-                            <th>รวมชั่วโมง OT</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportTableBody">
-                        <tr>
-                            <td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-8" id="adminBox2"></div>
-                <div class="card shadow-sm">
-                    <div class="card-header bg-success text-white">⏰✍️ 1. บันทึกเวลาทำงาน</div>
-                    <div class="card-body">
-                        <input type="number" id="attEmpId" class="form-control mb-2" placeholder="ID พนักงาน (เช่น 1)">
-                        <input type="date" id="attDate" class="form-control mb-2">
-                        <div class="row mb-3">
-                            <div class="col"><input type="time" id="attCheckIn" class="form-control" title="เวลาเข้า">
-                            </div>
-                            <div class="col"><input type="time" id="attCheckOut" class="form-control" title="เวลาออก">
+        <div id="adminSection">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-dark text-white">⚙️ 1. จัดการข้อมูลพนักงานทั้งหมด</div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-bordered">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>รหัสพนักงาน</th>
+                                            <th>ชื่อ-นามสกุล</th>
+                                            <th>ตำแหน่ง</th>
+                                            <th class="text-center" style="width: 150px;">จัดการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="employeeTableBody">
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <button class="btn btn-success w-100" onclick="recordAttendance()">บันทึกเวลา & คำนวณOT</button>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4" id="adminBox2">
-                <div class="card shadow-sm">
-                    <div class="card-header bg-warning text-dark">📝 2. ออกรายงานรายเดือน</div>
-                    <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col"><input type="number" id="repYear" class="form-control"
-                                    placeholder="ปี (เช่น 2024)" value="2024"></div>
-                            <div class="col"><input type="number" id="repMonth" class="form-control"
-                                    placeholder="เดือน (เช่น 3)" value="3"></div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">📝 2. ออกรายงานรายเดือน</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col"><input type="number" id="adminRepYear" class="form-control"
+                                        placeholder="ปี (เช่น 2024)" value="2026"></div>
+                                <div class="col"><input type="number" id="adminRepMonth" class="form-control"
+                                        placeholder="เดือน (เช่น 3)" value="3"></div>
+                            </div>
+                            <button class="btn btn-warning w-100" onclick="getReport('admin')">ดูรายงานสรุป</button>
                         </div>
-                        <button class="btn btn-warning w-100" onclick="getReport()">ดูรายงานสรุป</button>
                     </div>
+                </div>
+            </div>
+
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>รหัสพนักงาน</th>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>จำนวนวันทำงาน</th>
+                                <th>รวมชั่วโมงทำงาน</th>
+                                <th>รวมชั่วโมง OT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminReportTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
-        <div class="card shadow-sm mt-4">
-            <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>รหัสพนักงาน</th>
-                            <th>ชื่อ-นามสกุล</th>
-                            <th>จำนวนวันทำงาน</th>
-                            <th>รวมชั่วโมงทำงาน</th>
-                            <th>รวมชั่วโมง OT</th>
-                        </tr>
-                    </thead>
-                    <tbody id="reportTableBody">
-                        <tr>
-                            <td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td>
-                        </tr>
-                    </tbody>
-                </table>
+
+        <div id="userSection">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-success text-white">⏰✍️ 1. บันทึกเวลาทำงาน</div>
+                        <div class="card-body">
+                            <input type="number" id="attEmpId" class="form-control mb-2"
+                                placeholder="ID พนักงาน (เช่น 1)">
+                            <input type="date" id="attDate" class="form-control mb-2">
+                            <div class="row mb-3">
+                                <div class="col"><input type="time" id="attCheckIn" class="form-control"
+                                        title="เวลาเข้า"></div>
+                                <div class="col"><input type="time" id="attCheckOut" class="form-control"
+                                        title="เวลาออก"></div>
+                            </div>
+                            <button class="btn btn-success w-100" onclick="recordAttendance()">บันทึกเวลา & คำนวณ
+                                OT</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow-sm">
+                        <div class="card-header bg-warning text-dark">📝 2. ออกรายงานรายเดือน</div>
+                        <div class="card-body">
+                            <div class="row mb-3">
+                                <div class="col"><input type="number" id="userRepYear" class="form-control"
+                                        placeholder="ปี (เช่น 2024)" value="2026"></div>
+                                <div class="col"><input type="number" id="userRepMonth" class="form-control"
+                                        placeholder="เดือน (เช่น 3)" value="3"></div>
+                            </div>
+                            <button class="btn btn-warning w-100" onclick="getReport('user')">ดูรายงานสรุป</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-dark text-white">📊 ผลลัพธ์รายงานสรุป</div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>รหัสพนักงาน</th>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>จำนวนวันทำงาน</th>
+                                <th>รวมชั่วโมงทำงาน</th>
+                                <th>รวมชั่วโมง OT</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userReportTableBody">
+                            <tr>
+                                <td colspan="5" class="text-center">ยังไม่มีข้อมูลรายงาน</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
+    </div><!-- /container -->
 
-        // ระบบจัดการสิทธิ์ผู้ใช้งาน
-        document.addEventListener("DOMContentLoaded", () => {
-            const role = localStorage.getItem('role');
-
-            
-            if (!role) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            if (role === 'user') {
-                document.getElementById('adminBox1').style.display = 'none';
-                document.getElementById('adminBox2').style.display = 'none';
-            }
-        });
-
-        function logout() {
-            localStorage.clear();
-            window.location.href = 'login.html';
-        }
-
-        const API_URL = 'http://localhost:3000/api';
-
-        // ฟังก์ชันบันทึกเวลาทำงาน
-        async function recordAttendance() {
-            const data = {
-                employee_id: document.getElementById('attEmpId').value,
-                date: document.getElementById('attDate').value,
-                check_in: document.getElementById('attCheckIn').value,
-                check_out: document.getElementById('attCheckOut').value
-            };
-            try {
-                const res = await axios.post(`${API_URL}/attendance`, data);
-                const result = res.data;
-                if (result.message) {
-                    alert(`บันทึกสำเร็จ!\nชั่วโมงทำงาน: ${result.work_hours} ชม.\nOT: ${result.ot_hours} ชม.`);
-                }
-            } catch (error) {
-                alert(error.response?.data?.error || 'เกิดข้อผิดพลาด');
-            }
-        }
-
-        // ฟังก์ชันดึงรายงานสรุป
-        async function getReport() {
-            const year = document.getElementById('repYear').value;
-            const month = document.getElementById('repMonth').value;
-            try {
-                const res = await axios.get(`${API_URL}/attendance/report/${year}/${month}`);
-                const result = res.data;
-
-                const tbody = document.getElementById('reportTableBody');
-                tbody.innerHTML = ''; // เคลียร์ข้อมูลเก่า
-
-                if (result.report && result.report.length > 0) {
-                    result.report.forEach(row => {
-                        tbody.innerHTML += `
-                        <tr>
-                            <td>${row.employee_code}</td>
-                            <td>${row.name}</td>
-                            <td>${row.total_days} วัน</td>
-                            <td>${row.total_work_hours} ชม.</td>
-                            <td>${row.total_ot_hours} ชม.</td>
-                        </tr>
-                    `;
-                    });
-                } else {
-                    tbody.innerHTML = '<tr><td colspan="5" class="text-center">ไม่พบข้อมูลในเดือนนี้</td></tr>';
-                }
-            } catch (error) {
-                alert(error.response?.data?.error || 'เกิดข้อผิดพลาด');
-            }
-        }
-
-        // ดึงข้อมูลพนักงานทั้งหมดมาแสดงในตาราง
-        async function loadEmployees() {
-            try {
-                const res = await axios.get(`${API_URL}/employees`);
-                const employees = res.data;
-
-                const tbody = document.getElementById('employeeTableBody');
-                tbody.innerHTML = ''; // ล้างตารางเก่าก่อนใส่ข้อมูลใหม่
-
-                employees.forEach(emp => {
-                    tbody.innerHTML += `
-                <tr>
-                    <td>${emp.employee_code}</td>
-                    <td>${emp.name}</td>
-                    <td>${emp.department}</td>
-                    <td class="text-center">
-                        <button class="btn btn-warning btn-sm" onclick="editEmployee(${emp.id}, '${emp.name}', '${emp.department}')">✏️</button>
-                        <button class="btn btn-danger btn-sm" onclick="deleteEmployee(${emp.id})">🗑️</button>
-                    </td>
-                </tr>
-            `;
-                });
-            } catch (error) {
-                console.error('โหลดข้อมูลพนักงานล้มเหลว:', error);
-            }
-        }
-
-        // แก้ไขพนักงาน (มีหน้าต่างเด้งให้พิมพ์)
-        async function editEmployee(id, oldName, oldDept) {
-            const newName = prompt("แก้ไขชื่อ-นามสกุล:", oldName);
-            const newDept = prompt("แก้ไขตำแหน่ง:", oldDept);
-
-            // เช็คว่าผู้ใช้ไม่ได้กดยกเลิก (Cancel)
-            if (newName && newDept) {
-                try {
-                    await axios.put(`${API_URL}/employees/${id}`, { name: newName, department: newDept });
-                    alert('แก้ไขข้อมูลสำเร็จ!');
-                    loadEmployees(); // โหลดตารางใหม่ทันที
-                } catch (error) {
-                    alert(error.response?.data?.error || 'เกิดข้อผิดพลาดในการแก้ไข');
-                }
-            }
-        }
-
-        // ลบพนักงาน
-        async function deleteEmployee(id) {
-            if (confirm('คุณแน่ใจหรือไม่ว่าต้องการลบพนักงานคนนี้?')) {
-                try {
-                    await axios.delete(`${API_URL}/employees/${id}`);
-                    alert('ลบข้อมูลสำเร็จ!');
-                    loadEmployees(); // โหลดตารางใหม่ทันที
-                } catch (error) {
-                    alert(error.response?.data?.error || 'เกิดข้อผิดพลาดในการลบ');
-                }
-            }
-        }
-
-        // สั่งให้โหลดตารางพนักงาน ทันทีที่เปิดหน้าเว็บขึ้นมา
-        window.addEventListener('load', () => {
-            loadEmployees();
-        });
-
-        
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="index.js"></script>
 
 </body>
-
 </html>
