@@ -13,7 +13,7 @@ router.post('/', async (req, res) => {
     const diffMs = end - start;
     const work_hours = parseFloat((diffMs / (1000 * 60 * 60)).toFixed(2));
 
-    
+
     const ot_hours = work_hours > 8 ? parseFloat((work_hours - 8).toFixed(2)) : 0;
 
     // บันทึกลงฐานข้อมูล
