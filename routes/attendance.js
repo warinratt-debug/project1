@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('./db');
 
-// 1. บันทึกเข้า-ออกงาน และคำนวณ OT (POST)
+// บันทึกเข้า-ออกงาน และคำนวณ OT
 router.post('/', async (req, res) => {
   const { employee_id, date, check_in, check_out } = req.body;
 
@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 2. ออกรายงานสรุปรายเดือน (GET)
+// 2. ออกรายงานสรุปรายเดือน
 router.get('/report/:year/:month', async (req, res) => {
   const { year, month } = req.params;
   try {

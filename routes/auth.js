@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./db'); // ดึงการเชื่อมต่อฐานข้อมูลมาใช้
+const db = require('./db'); 
 
-// Endpoint สำหรับ Login (POST /api/login)
+// Login 
 router.post('/', async (req, res) => {
   const { username, password } = req.body;
 

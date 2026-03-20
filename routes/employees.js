@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./db'); // ดึงการเชื่อมต่อฐานข้อมูลมาใช้
+const db = require('./db');
 
-// 1. ดึงรายชื่อพนักงานทั้งหมด (GET)
+// ดึงรายชื่อพนักงานทั้งหมด
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM employees ORDER BY id DESC');
@@ -12,7 +12,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// 2. เพิ่มพนักงานใหม่ (POST)
+// เพิ่มพนักงานใหม่
 router.post('/', async (req, res) => {
   const { employee_code, name, department } = req.body;
   try {
@@ -26,7 +26,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 3. แก้ไขข้อมูลพนักงาน (PUT)
+// แก้ไขข้อมูลพนักงาน
 router.put('/:id', async (req, res) => {
   const { id } = req.params; // รับ ID จาก URL
   const { name, department } = req.body; // รับข้อมูลที่ต้องการแก้
@@ -46,7 +46,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// 4. ลบข้อมูลพนักงาน (DELETE)
+// ลบข้อมูลพนักงาน
 router.delete('/:id', async (req, res) => {
   const { id } = req.params; // รับ ID จาก URL
 
