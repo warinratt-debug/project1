@@ -32,7 +32,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// 2. ออกรายงานสรุปรายเดือน
+// ออกรายงานสรุปรายเดือน
 router.get('/report/:year/:month', async (req, res) => {
   const { year, month } = req.params;
   try {
