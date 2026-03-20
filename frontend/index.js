@@ -1,6 +1,6 @@
         const API_URL = 'http://localhost:3000/api';
 
-        // ระบบจัดการสิทธิ์ผู้ใช้งาน
+        // ระบบเช็คrole
         document.addEventListener("DOMContentLoaded", () => {
             const role = localStorage.getItem('role');
 
@@ -25,7 +25,7 @@
             window.location.href = 'login.html';
         }
 
-        // ฟังก์ชันบันทึกเวลาทำงาน
+        // บันทึกเวลาทำงาน
         async function recordAttendance() {
             const data = {
                 employee_id: document.getElementById('attEmpId').value,
@@ -42,7 +42,6 @@
                         html: `ชั่วโมงทำงาน: <b>${result.work_hours}</b> ชม.<br>OT: <b>${result.ot_hours}</b> ชม.`,
                         icon: 'success'
                     }).then(() => {
-                        // เพิ่มบรรทัดนี้ เพื่อให้ตารางรายงานด้านล่างรีเฟรชอัปเดตข้อมูลทันที
                         getReport(role);
                     });
                 }
@@ -51,7 +50,7 @@
             }
         }
 
-        // ฟังก์ชันดึงรายงานสรุป (รับ role เพื่อเลือก element ที่ถูกต้อง)
+        // รายงานสรุป
         async function getReport(role) {
             const year = document.getElementById(role === 'admin' ? 'adminRepYear' : 'userRepYear').value;
             const month = document.getElementById(role === 'admin' ? 'adminRepMonth' : 'userRepMonth').value;
